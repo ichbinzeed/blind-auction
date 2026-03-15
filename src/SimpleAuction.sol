@@ -5,22 +5,22 @@ contract SimpleAuction {
     // absolute unix timestamps (seconds since 1970-01-01)
     // or time periods in seconds.
     address payable public beneficiary;
-    uint public auctionEndTime;
+    uint256 public auctionEndTime;
 
     // Current state of the auction.
     address public highestBidder;
-    uint public highestBid;
+    uint256 public highestBid;
 
     // Allowed withdrawals of previous bids
-    mapping(address => uint) pendingReturns;
+    mapping(address => uint256) pendingReturns;
 
     // Set to true at the end, disallows any change.
     // By default initialized to `false`.
     bool ended;
 
     // Events that will be emitted on changes.
-    event HighestBidIncreased(address bidder, uint amount);
-    event AuctionEnded(address winner, uint amount);
+    event HighestBidIncreased(address bidder, uint256 amount);
+    event AuctionEnded(address winner, uint256 amount);
 
     // Errors that describe failures.
 
@@ -32,7 +32,7 @@ contract SimpleAuction {
     /// The auction has already ended.
     error AuctionAlreadyEnded();
     /// There is already a higher or equal bid.
-    error BidNotHighEnough(uint highestBid);
+    error BidNotHighEnough(uint256 highestBid);
     /// The auction has not ended yet.
     error AuctionNotYetEnded();
     /// The function auctionEnd has already been called.
@@ -41,7 +41,7 @@ contract SimpleAuction {
     /// Create a simple auction with `biddingTime`
     /// seconds bidding time on behalf of the
     /// beneficiary address `beneficiaryAddress`.
-    constructor(uint biddingTime, address payable beneficiaryAddress) {
+    constructor(uint256 biddingTime, address payable beneficiaryAddress) {
         beneficiary = beneficiaryAddress;
         auctionEndTime = block.timestamp + biddingTime;
     }
@@ -83,7 +83,7 @@ contract SimpleAuction {
 
     /// Withdraw a bid that was overbid.
     function withdraw() external returns (bool) {
-        uint amount = pendingReturns[msg.sender];
+        uint256 amount = pendingReturns[msg.sender];
         if (amount > 0) {
             // It is important to set this to zero because the recipient
             // can call this function again as part of the receiving call

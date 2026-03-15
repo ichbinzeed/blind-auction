@@ -45,12 +45,7 @@ contract SimpleAuctionTest is Test {
         simpleauction.bid{value: 2 ether}();
         vm.prank(bob);
         vm.deal(bob, 10 ether);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                SimpleAuction.BidNotHighEnough.selector,
-                2 ether
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(SimpleAuction.BidNotHighEnough.selector, 2 ether));
         simpleauction.bid{value: 1 ether}();
     }
 
